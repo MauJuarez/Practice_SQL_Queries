@@ -97,27 +97,6 @@ FROM (
 WHERE rn = 1 AND medal IS NOT NULL
 ORDER BY games, medal;
 
-/* En esta consulta, utilizamos la función ROW_NUMBER() para asignar un número de fila a cada registro, 
-particionado por año y tipo de medalla, y ordenado por la cantidad total de medallas en orden descendente. 
-Luego, en la consulta principal, seleccionamos solo los registros con rn = 1, 
-lo que significa que solo seleccionamos el registro con el máximo valor de medallas por año y tipo de medalla. 
-Los resultados se ordenan por año y tipo de medalla. */
---- SOLO ES PRACTICA
-    SELECT games, noc, COUNT(*) as total_gold_medals,
-           ROW_NUMBER() OVER (PARTITION BY games ORDER BY COUNT(*) DESC) as rn
-    FROM OLYMPICS_HISTORY WHERE medal = 'Gold'
-    GROUP BY games, noc, medal
-
-	    SELECT games, noc, COUNT(*) as total_silver_medals,
-           ROW_NUMBER() OVER (PARTITION BY games ORDER BY COUNT(*) DESC) as rn
-    FROM OLYMPICS_HISTORY WHERE medal = 'Silver'
-    GROUP BY games, noc, medal
-
-	    SELECT games, noc, COUNT(*) as total_bronze_medals,
-           ROW_NUMBER() OVER (PARTITION BY games ORDER BY COUNT(*) DESC) as rn
-    FROM OLYMPICS_HISTORY WHERE medal = 'Bronze'
-    GROUP BY games, noc, medal
-
 
 
 --- 17-Identify which country won the most gold, most silver, most bronze medals and the most medals in each olympic games.
@@ -154,3 +133,6 @@ FROM OLYMPICS_HISTORY WHERE noc = 'IND' GROUP BY games, sport  ORDER BY total_of
 SELECT noc, sport, games, COUNT(*) AS total_of_medals
 FROM OLYMPICS_HISTORY WHERE noc = 'IND' AND sport = 'Hockey' AND medal IS NOT NULL
 GROUP BY noc, sport, games ORDER BY total_of_medals DESC;
+
+
+--- POR: Mauricio Emmanuel Juarez Peña
